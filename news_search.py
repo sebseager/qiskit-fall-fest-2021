@@ -40,40 +40,41 @@ def find_article(articles, keywords):
     return chosen_article[0], chosen_article[2]
 
 
+@st.cache()
+def pull_articles(news_country, api_key):
+    # api call
+    base_url = "https://newsapi.org/v2/top-headlines"
+    country = f"country={news_country}&" if len(news_country) else ""
+    x = requests.get(f"{base_url}?{country}apiKey={api_key}")
+    try:
+        articles = dict(x.json())["articles"]
+    except KeyError:
+        st.error("Invalid API call")
+        return
+
+    # process articles from api
+    processed_articles = []
+    for a in articles:
+        if a["content"]:
+            new_content = a["content"].lower().replace(".,![]{}-—_;':?", "").split()
+            new_title = a["title"]
+            new_url = a["url"]
+            processed_articles.append((new_title, new_content, new_url))
+
+    return processed_articles
+
+
 def main():
     st.title("<@YAS ADD A GOOD TITLE HERE>")
-
     st.header("1. Pull articles from NewsAPI")
 
     api_key = st.text_input("NewsAPI key", value="b72aad9271604a1b888e9479c9de4fb7")
     news_country = st.text_input("News country/region to search", value="us")
-    get_news = st.button("Pull all headlines")
 
-    processed_articles = []
-
-    article_summary = st.empty()
-
-    if get_news:
-        # api call
-        base_url = "https://newsapi.org/v2/top-headlines"
-        country = f"country={news_country}&" if len(news_country) else ""
-        x = requests.get(f"{base_url}?{country}apiKey={api_key}")
-        try:
-            articles = dict(x.json())["articles"]
-        except KeyError:
-            st.error("Invalid API call")
-            return
-
-        # process articles from api
-        processed_articles = []
-        for a in articles:
-            if a["content"]:
-                new_content = a["content"].lower().replace(".,![]{}-—_;':?", "").split()
-                new_title = a["title"]
-                new_url = a["url"]
-                processed_articles.append((new_title, new_content, new_url))
-
+    if st.button("Pull all headlines"):
+        processed_articles = pull_articles(news_country, api_key)
         article_summary = st.text(f"Articles found: {len(processed_articles)}")
+        print(processed_articles)
 
     # keywords to check for
     st.header("2. Perform search")
@@ -81,9 +82,10 @@ def main():
 
     # grab article
     if st.button("Run"):
-        print(search_input)
         search_keywords = search_input.split(" ")
         print(search_keywords)
+        print("BREAK")
+        print(processed_articles)
         received_article = find_article(processed_articles, search_keywords)
         try:
             st.text(f"Article: {received_article[0]}")
