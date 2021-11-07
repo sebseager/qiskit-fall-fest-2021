@@ -71,22 +71,20 @@ def main():
     api_key = st.text_input("NewsAPI key", value="b72aad9271604a1b888e9479c9de4fb7")
     news_country = st.text_input("News country/region to search", value="us")
 
-    if st.button("Pull all headlines"):
-        processed_articles = pull_articles(news_country, api_key)
-        article_summary = st.text(f"Articles found: {len(processed_articles)}")
-        print(processed_articles)
-
     # keywords to check for
     st.header("2. Perform search")
     search_input = st.text_input("Keywords to search for (separated by spaces)")
 
-    # grab article
     if st.button("Run"):
+        all_articles = pull_articles(news_country, api_key)
+        article_summary = st.text(f"Articles found: {len(all_articles)}")
+
+        # grab article
         search_keywords = search_input.split(" ")
         print(search_keywords)
         print("BREAK")
-        print(processed_articles)
-        received_article = find_article(processed_articles, search_keywords)
+        print(all_articles)
+        received_article = find_article(all_articles, search_keywords)
         try:
             st.text(f"Article: {received_article[0]}")
             st.text(f"URL: {received_article[1]}")
@@ -95,4 +93,5 @@ def main():
 
 
 if __name__ == "__main__":
+
     main()
