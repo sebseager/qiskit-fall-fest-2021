@@ -51,7 +51,10 @@ def find_article(articles, keywords):
     encoded_vector = list(encode_articles([x[1] for x in articles], keywords))
     encoded_vector = np.array(encoded_vector)
     state_vector = Statevector(data=encoded_vector)
-    chosen_article = articles[int(state_vector.measure()[0], 2)]
+    print(state_vector.measure())
+    # idx = int(state_vector.measure()[0], 2)
+    idx = int(state_vector.measure()[0])
+    chosen_article = articles[idx]
     return chosen_article[0], chosen_article[2]
 
 
