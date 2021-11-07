@@ -51,7 +51,10 @@ def find_article(articles, keywords):
     encoded_vector = list(encode_articles([x[1] for x in articles], keywords))
     encoded_vector = np.array(encoded_vector)
     state_vector = Statevector(data=encoded_vector)
-    chosen_article = articles[int(state_vector.measure()[0], 2)]
+    # print(state_vector.measure())
+    # idx = int(state_vector.measure()[0], 2)
+    idx = int(state_vector.measure()[0])
+    chosen_article = articles[idx]
     return chosen_article[0], chosen_article[2]
 
 
@@ -60,7 +63,7 @@ def pull_articles(news_country, api_key):
     # api call
     base_url = "https://newsapi.org/v2/top-headlines"
     country = f"country={news_country}&" if len(news_country) else ""
-    x = requests.get(f"{base_url}?{country}apiKey={api_key}")
+    x = requests.get(f"{base_url}?{country}apiKey={api_key}&pageSize=100")
     try:
         articles = dict(x.json())["articles"]
     except KeyError:
@@ -96,9 +99,6 @@ def main():
 
         # grab article
         search_keywords = search_input.split(" ")
-        print(search_keywords)
-        print("BREAK")
-        print(all_articles)
         received_article = find_article(all_articles, search_keywords)
         try:
             st.text(f"Article: {received_article[0]}")
