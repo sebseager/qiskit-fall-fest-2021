@@ -2,7 +2,7 @@
 
 ## Qiskit Fall Fest 2021 at Yale
 
-Our project allows users to specify a country for their newsfeed and keywords that they want to search for, from which they will recieve an article suggestion. We use a statevector that is in a superposition of possible article outputs, with the probability of being measured increasing if more of the desired keywords are present. The statevector is measured and the cooresponding article title and url is returned. The goal is for users to recieve variation in their news suggestions, inspired by quantum mechanics, while still recieving relevant suggestions with high probability. We hope to inspire an interest in quantum mechanics and quantum computing with a fun suggestion tool that introduces some variation into users' daily news.
+Our project allows users to specify a country/region for their news and keywords that they want to search for, from which they will recieve an article suggestion. We use a statevector that is in a superposition of possible article outputs, with the probability of being measured increasing if more of the desired keywords are present. The statevector is measured and the cooresponding article title and url is returned. The goal is for users to recieve variation in their news suggestions, inspired by quantum mechanics, while still recieving relevant suggestions with high probability. We hope to inspire an interest in quantum mechanics and quantum computing with a fun suggestion tool that introduces some variation into users' daily news.
 
 ## Setup
 
