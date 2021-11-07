@@ -22,7 +22,7 @@ streamlit run news_search.py
 
 Then, in your browser, open the webapp on the port specified by `streamlit`, e.g., `http://localhost:8501`.
 
-Follow the web interface to use our project!
+Follow the web interface to use our project! Alternatively, take a look at our Jupyter notebook (`news_search.ipynb`) for a static demonstration.
 
 ## Authors
 
