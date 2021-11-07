@@ -121,17 +121,9 @@ def main():
             except KeyError:
                 occurrence_dict[received_article[0]] = 1
 
-        # hist_df = pd.DataFrame([occurrence_dict]).T
-        # hist_df.hist()
-        # plt.title("Article Frequency")
-        # plt.xlabel("Frequency")
-        # plt.show()
-        # st.pyplot()
-
         st.bar_chart(
             pd.DataFrame.from_dict(occurrence_dict, orient="index"),
             height=500,
-            
         )
 
 
