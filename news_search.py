@@ -15,6 +15,8 @@
 
 import requests
 import numpy as np
+import pandas as pd
+from matplotlib import pyplot as plt
 import qiskit
 from qiskit.quantum_info import Statevector
 import streamlit as st
@@ -96,8 +98,6 @@ def main():
     if st.button("Run"):
         all_articles = pull_articles(news_country, api_key)
         article_summary = st.text(f"Articles found: {len(all_articles)}")
-
-        # grab article
         search_keywords = search_input.split(" ")
         received_article = find_article(all_articles, search_keywords)
         try:
@@ -105,6 +105,34 @@ def main():
             st.text(f"URL: {received_article[1]}")
         except IndexError:
             st.error("No articles found")
+
+    st.header("3. Display article frequencies")
+    nrep = st.slider("Sample size", 10, 5000, 1000)
+
+    if st.button("Build article frequency graph"):
+        all_articles = pull_articles(news_country, api_key)
+        article_summary = st.text(f"Articles found: {len(all_articles)}")
+        search_keywords = search_input.split(" ")
+        occurrence_dict = {}
+        for i in range(nrep):
+            received_article = find_article(all_articles, search_keywords)
+            try:
+                occurrence_dict[received_article[0]] += 1
+            except KeyError:
+                occurrence_dict[received_article[0]] = 1
+
+        # hist_df = pd.DataFrame([occurrence_dict]).T
+        # hist_df.hist()
+        # plt.title("Article Frequency")
+        # plt.xlabel("Frequency")
+        # plt.show()
+        # st.pyplot()
+
+        st.bar_chart(
+            pd.DataFrame.from_dict(occurrence_dict, orient="index"),
+            height=500,
+            
+        )
 
 
 if __name__ == "__main__":
